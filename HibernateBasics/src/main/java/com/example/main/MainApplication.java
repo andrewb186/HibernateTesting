@@ -22,11 +22,9 @@ public class MainApplication {
 	
 	public static void main(String[] args) {
 		try{
-			Configuration config = new Configuration(); 
-			config.addAnnotatedClass(PersonInfo.class);
+			Configuration config = new Configuration();
 			config.addAnnotatedClass(Address.class);
-			
-			
+			config.addAnnotatedClass(PersonInfo.class);
 			
 			serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
 			
