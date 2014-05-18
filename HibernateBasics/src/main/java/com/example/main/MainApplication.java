@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.service.ServiceRegistry;
 
 import com.example.hibernate.model.Address;
@@ -24,7 +25,8 @@ public class MainApplication {
 			Configuration config = new Configuration(); 
 			config.addAnnotatedClass(PersonInfo.class);
 			config.addAnnotatedClass(Address.class);
-			//config.addPackage("com.example.hibernate.model");
+			
+			
 			
 			serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
 			
@@ -35,11 +37,37 @@ public class MainApplication {
 			log.info("Session Opened");
 			session.close();
 			log.info("Session Closed");
+			
+			
 		}catch(Exception ex){
 			log.error(ex.getMessage());
 		}
 	}
 
 	
+	
+/**	
+ * Get .class file form package
+ * create Class object 
+ * and add to config.addAnnotatedClass()
+ *
+	private static Class getPackageClasses(){
+			Class cls = null;
+			try {
+				cls = Class.forName("com.example.hibernate.model.Address");
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return cls;
+	}
+	
+	Configuration config = new Configuration(); 
+	config.addAnnotatedClass(getPackageClasses());
+	
+	*
+	*
+	*/
 	
 }
