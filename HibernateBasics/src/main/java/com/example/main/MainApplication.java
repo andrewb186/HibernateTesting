@@ -10,6 +10,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import com.example.hibernate.model.Address;
 import com.example.hibernate.model.PersonInfo;
+import com.example.hibernate.model.UserInfo;
 
 public class MainApplication {
 
@@ -25,6 +26,7 @@ public class MainApplication {
 			Configuration config = new Configuration();
 			config.addAnnotatedClass(Address.class);
 			config.addAnnotatedClass(PersonInfo.class);
+			config.addAnnotatedClass(UserInfo.class);
 			
 			serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
 			
@@ -32,9 +34,16 @@ public class MainApplication {
 			
 			Session session = sessionFactory.openSession();
 			session.getTransaction().begin();
-			log.info("Session Opened");
+			
+			PersonInfo p = createPersonInfo();
+			
+			session.save(p);
+			session.save((Address)p.getAddress().toArray()[0]);
+			session.save((Address)p.getAddress().toArray()[1]);
+			
+			session.getTransaction().commit();
+			session.flush();
 			session.close();
-			log.info("Session Closed");
 			
 			
 		}catch(Exception ex){
@@ -42,7 +51,31 @@ public class MainApplication {
 		}
 	}
 
-	
+
+	private static PersonInfo createPersonInfo(){
+		PersonInfo person = new PersonInfo();
+		person.setName("Andrew");
+		person.setSurname("Brincat");
+		
+		
+		Address add1 = new Address();
+		add1.setAddress1("address1a");
+		add1.setAddress2("address2a");
+		add1.setCity("Mosta");
+		add1.setPostcode("mst011");
+		
+		
+		Address add2 = new Address();
+		add2.setAddress1("address1b");
+		add2.setAddress2("address2b");
+		add2.setCity("Mosta");
+		add2.setPostcode("mst011");
+		
+		person.getAddress().add(add1);
+		person.getAddress().add(add2);
+		
+		return person;
+	}
 	
 /**	
  * Get .class file form package

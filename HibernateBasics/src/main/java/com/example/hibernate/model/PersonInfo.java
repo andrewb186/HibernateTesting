@@ -1,9 +1,17 @@
 package com.example.hibernate.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +28,11 @@ public class PersonInfo {
 	
 	@Column(name="surname")
 	private String surname;
+	
+	@OneToMany
+	@JoinTable(joinColumns=@JoinColumn(name="personID"),
+				inverseJoinColumns=@JoinColumn(name="addressID"))
+	private Collection<Address> address = new ArrayList<Address>();
 
 	/*
 	 * The no-argument constructor is a requirement since Hibernate instantiate
@@ -52,5 +65,15 @@ public class PersonInfo {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
+
+	public Collection<Address> getAddress() {
+		return address;
+	}
+
+	public void setAddress(Collection<Address> address) {
+		this.address = address;
+	}
+
+	
 
 }
